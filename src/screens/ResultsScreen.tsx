@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,9 +9,15 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
+import { useSelector } from 'react-redux';
+import { RootState } from '../stores/BooksStore';
+import SearchBar from '../components/SearchBar';
+import { Book } from '../types';
 
 function ResultsScreen(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const initialResults = useSelector((state: RootState) => state.books.results);
+  const [results, setResults] = useState<Book[]>([]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -20,6 +26,8 @@ function ResultsScreen(): React.JSX.Element {
   return (
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <Text>ResultsScreen</Text>
+      <SearchBar onPressSearch={() => setResults(initialResults)}/>
+      {results.map((book) => <Text key={book.id}>{book.title}</Text>)}
     </SafeAreaView>
   );
 }

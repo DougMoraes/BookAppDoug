@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Button from './Button';
 
-export default function SearchBar() {
-  const navigation = useNavigation();
+type SearchBarProps = {
+  onPressSearch: () => void,
+};
 
+export default function SearchBar({onPressSearch}: SearchBarProps) {
   return (
     <View style={styles.container}>
       <TextInput
@@ -14,7 +15,7 @@ export default function SearchBar() {
       <Button
         text="Search"
         style={styles.button}
-        onPress={() => navigation.navigate('Results', {searchText: 'Gabo'})}
+        onPress={onPressSearch}
       />
     </View>
   );
