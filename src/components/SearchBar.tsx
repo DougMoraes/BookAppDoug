@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import Button from './Button';
 
 type SearchBarProps = {
-  onPressSearch: () => void,
+  onPressSearch: (text:string) => void,
 };
 
 export default function SearchBar({onPressSearch}: SearchBarProps) {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
+        onChangeText={(value) => setSearchText(value)}
       />
       <Button
         text="Search"
         style={styles.button}
-        onPress={onPressSearch}
+        onPress={() => onPressSearch(searchText)}
       />
     </View>
   );
