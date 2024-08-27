@@ -5,10 +5,8 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SearchBar from '../components/SearchBar';
-import { searchBooks } from '../features/books/booksSlice';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 
@@ -16,15 +14,13 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 function HomeScreen({navigation}: HomeScreenProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const dispatch = useDispatch();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const onPressSearch = () => {
-    dispatch(searchBooks());
-    navigation.navigate('Results', {searchText: 'Gabo'});
+  const onPressSearch = (text: string) => {
+    navigation.navigate('Results', {searchText: text});
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,15 +9,23 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { useSelector } from 'react-redux';
-import { RootState } from '../stores/BooksStore';
+import { useSelector, useDispatch } from 'react-redux';
 import SearchBar from '../components/SearchBar';
-import { Book } from '../types';
+import { fetchBooks } from '../features/books/booksSlice';
+import { RootStateType, AppDispatchType } from '../types';
 
 function ResultsScreen(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const initialResults = useSelector((state: RootState) => state.books.results);
-  const [results, setResults] = useState<Book[]>([]);
+  const results = useSelector((state: RootStateType) => state.books.results);
+  const dispatch = useDispatch<AppDispatchType>();
+
+  const onPressSearch = async (text: string) => {
+    try {
+      await dispatch(fetchBooks(text));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -26,7 +34,7 @@ function ResultsScreen(): React.JSX.Element {
   return (
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <Text>ResultsScreen</Text>
-      <SearchBar onPressSearch={() => setResults(initialResults)}/>
+      <SearchBar onPressSearch={onPressSearch}/>
       {results.map((book) => <Text key={book.id}>{book.title}</Text>)}
     </SafeAreaView>
   );
