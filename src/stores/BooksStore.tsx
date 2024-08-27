@@ -6,6 +6,3 @@ export const BooksStore = configureStore({
     books: booksReducer,
   },
 });
-
-export type RootState = ReturnType<typeof BooksStore.getState>
-export type AppDispatch = typeof BooksStore.dispatch
