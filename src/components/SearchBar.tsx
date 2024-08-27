@@ -13,7 +13,9 @@ export default function SearchBar({onPressSearch}: SearchBarProps) {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
+        value={searchText}
         onChangeText={(value) => setSearchText(value)}
+        testID="search-input"
       />
       <Button
         text="Search"
