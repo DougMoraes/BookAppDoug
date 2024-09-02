@@ -11,6 +11,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { useSelector, useDispatch } from 'react-redux';
 import SearchBar from '../components/SearchBar';
+import BookCard from '../components/BookCard';
 import { fetchBooks } from '../features/books/booksSlice';
 import { RootStateType, AppDispatchType } from '../types';
 
@@ -35,7 +36,7 @@ function ResultsScreen(): React.JSX.Element {
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <Text>ResultsScreen</Text>
       <SearchBar onPressSearch={onPressSearch}/>
-      {results.map((book) => <Text key={book.id}>{book.title}</Text>)}
+      {results.map((book) => <BookCard key={book.id} book={book} />)}
     </SafeAreaView>
   );
 }
