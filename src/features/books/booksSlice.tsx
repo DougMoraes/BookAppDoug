@@ -13,8 +13,8 @@ const initialState: BooksState = {
 
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
-  async (text: string) => {
-    const url = `https://openlibrary.org/search.json?q=${text}`;
+  async ({text, page}: {text: string, page: number}) => {
+    const url = `https://openlibrary.org/search.json?q=${text}&limit=10&page=${page}`;
 
     try {
       const response = await fetch(url);

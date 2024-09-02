@@ -1,11 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
   useColorScheme,
 } from 'react-native';
-
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
@@ -16,13 +16,15 @@ import { fetchBooks } from '../features/books/booksSlice';
 import { RootStateType, AppDispatchType } from '../types';
 
 function ResultsScreen(): React.JSX.Element {
+  const [currentPage, setCurrentPage] = useState(1);
   const isDarkMode = useColorScheme() === 'dark';
   const results = useSelector((state: RootStateType) => state.books.results);
   const dispatch = useDispatch<AppDispatchType>();
 
   const onPressSearch = async (text: string) => {
     try {
-      await dispatch(fetchBooks(text));
+      await dispatch(fetchBooks({text, page: 1}));
+      setCurrentPage(1);
     } catch (err) {
       console.log(err);
     }
@@ -36,7 +38,15 @@ function ResultsScreen(): React.JSX.Element {
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <Text>ResultsScreen</Text>
       <SearchBar onPressSearch={onPressSearch}/>
-      {results.map((book) => <BookCard key={book.id} book={book} />)}
+      <FlatList
+        data={results}
+        renderItem={({ item }) => <BookCard key={item.id} book={item} /> }
+        keyExtractor={item => item.id}
+        onEndReached={() => {
+          console.log('onEndReached', currentPage);
+          setCurrentPage(currentPage + 1);
+        }}
+      />
     </SafeAreaView>
   );
 }
