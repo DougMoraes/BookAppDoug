@@ -5,10 +5,12 @@ export type RootStackParamList = {
   Results: { searchText: string };
 };
 
-export type Book = {
+export type BookType = {
   id: string,
   title: string,
-  author: string
+  author_name: string,
+  lending_edition_s?: string,
+  first_publish_year?: number,
 };
 
 export type RootStateType = ReturnType<typeof BooksStore.getState>;
