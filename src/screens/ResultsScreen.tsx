@@ -18,13 +18,17 @@ import { RootStateType, AppDispatchType } from '../types';
 function ResultsScreen(): React.JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const isDarkMode = useColorScheme() === 'dark';
-  const results = useSelector((state: RootStateType) => state.books.results);
+  const { results, searchText } = useSelector((state: RootStateType) => state.books);
   const dispatch = useDispatch<AppDispatchType>();
 
-  const onPressSearch = async (text: string) => {
+  const onPressSearch = async (text: string | null) => {
+    if (!text || text.length < 3) {
+      return;
+    }
+
     try {
-      await dispatch(fetchBooks({text, page: 1}));
       setCurrentPage(1);
+      await dispatch(fetchBooks({text, page: currentPage}));
     } catch (err) {
       console.log(err);
     }
@@ -38,15 +42,19 @@ function ResultsScreen(): React.JSX.Element {
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <Text>ResultsScreen</Text>
       <SearchBar onPressSearch={onPressSearch}/>
-      <FlatList
+      {results.length === 0 ?
+        <Text>No results found</Text> :
+        <FlatList
         data={results}
         renderItem={({ item }) => <BookCard key={item.id} book={item} /> }
         keyExtractor={item => item.id}
-        onEndReached={() => {
-          console.log('onEndReached', currentPage);
+        onEndReached={async () => {
           setCurrentPage(currentPage + 1);
+          searchText &&
+          await dispatch(fetchBooks({text: searchText, page: currentPage}));
         }}
       />
+      }
     </SafeAreaView>
   );
 }

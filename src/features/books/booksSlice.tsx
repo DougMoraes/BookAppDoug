@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BookType } from '../../types';
 
 export interface BooksState {
@@ -47,11 +47,10 @@ export const booksSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchBooks.pending, state => {
       state.searchStatus = 'loading';
-      state.results = [];
     });
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
       state.searchStatus = 'ready';
-      state.results = action.payload;
+      state.results = [...state.results, ...action.payload];
     });
     builder.addCase(fetchBooks.rejected, state => {
       state.searchStatus = 'failed';
