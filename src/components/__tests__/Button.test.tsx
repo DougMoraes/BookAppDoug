@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, userEvent } from '@testing-library/react-native';
 import Button from '../Button';
-import { getAsRegExp } from './__utils__/utils';
+import { getAsRegExp } from '../../__tests__/__utils__/utils';
 
 beforeEach(() => {
   jest.useFakeTimers();

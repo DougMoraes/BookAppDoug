@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { screen, userEvent } from '@testing-library/react-native';
 import SearchBar from '../SearchBar';
+import { renderWithProviders } from '../../__tests__/__utils__/utils';
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -18,7 +19,7 @@ describe('SearchBar Component', () => {
     });
     const mockOnPress = jest.fn();
 
-    render(<SearchBar onPressSearch={mockOnPress}/>);
+    renderWithProviders(<SearchBar onPressSearch={mockOnPress}/>);
 
     const renderedInput = screen.getAllByTestId('search-input');
     const renderedButton = screen.getAllByText('Search');
