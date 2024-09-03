@@ -167,6 +167,15 @@ exports[`HomeScreen should render correctly 1`] = `
                 </Text>
               </View>
             </View>
+            <Text
+              style={
+                {
+                  "color": "red",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                }
+              }
+            />
           </RCTSafeAreaView>
         </View>
       </View>
